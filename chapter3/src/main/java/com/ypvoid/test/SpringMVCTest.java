@@ -8,11 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -33,6 +31,53 @@ public class SpringMVCTest {
 
     @Autowired
     private ResourceBundleMessageSource messageSource;
+
+    @RequestMapping("/testSimpleMappingExceptionResolver")
+    public String testSimpleMappingExceptionResolver(@RequestParam("i") int i){
+        String [] vals = new String[10];
+        System.out.println(vals[i]);
+        return "success";
+    }
+
+    @RequestMapping(value="/testDefaultHandlerExceptionResolver",method=RequestMethod.POST)
+    public String testDefaultHandlerExceptionResolver(){
+        System.out.println("testDefaultHandlerExceptionResolver...");
+        return "success";
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST,reason = "测试")
+    @RequestMapping("/testResponseStatusExceptionResolver")
+    public String testResponseStatusExceptionResolver(@RequestParam("i") Integer i) {
+        if (i == 13) {
+            throw new UserNameNotMatchPasswordException();
+        }
+        System.out.println("testResponseStatusExceptionResolver...");
+        return "success";
+    }
+
+    /**
+     * 在@ExceptionHandler方法的入参中可以加入Exception类型的参数，该参数即对应发生的异常对象
+     * @ExceptionHandler方法的入参中不能传入Map,如希望把异常信息传导页面上，需要使用ModelAndView作为返回值
+     * @ExceptionHandler方法标记的异常有优先级的问题
+     *
+     * @ControllerAdvice：如果在当前Handler中找不到@ExceptionHandler方法来处理当前方法出现的异常，则将去@ControllerAdvice
+     * 标记的类中查找@ExceptionHandler标记的方法来处理异常
+     * @param ex
+     * @return
+     */
+//    @ExceptionHandler(value = {ArithmeticException.class})
+//    public ModelAndView handleArithmeticException(Exception ex) {
+//        System.out.println("出异常了:" + ex);
+//        ModelAndView mv = new ModelAndView("error");
+//        mv.addObject("exception", ex);
+//        return mv;
+//    }
+
+    @RequestMapping("/testExceptionHandlerExceptionResolver")
+    public String testExceptionHandlerExceptionResolver(@RequestParam("i") int i){
+        System.out.println("result: " + (10 / i));
+        return "success";
+    }
 
     @RequestMapping("/testFileUpload")
     public String testFileUpload(@RequestParam("desc") String desc, @RequestParam("file") MultipartFile file) {

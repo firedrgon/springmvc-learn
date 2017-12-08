@@ -29,6 +29,17 @@
 * 文件上传，添加Bean:CommonsMultipartResolver和commons-io,commons-fileupload包
 * MultipartFile,multipart/form-data
 * 拦截器的配置:实现HandlerInterceptor接口，在application.xml配置拦截器
+* 多个拦截器的执行顺序:preHandle按拦截器的顺序执行，postHandle,afterCompletion按拦截器的逆序执行，
+  preHandle返回false，则后续的拦截器和目标方法不会执行
+* springmvc异常处理:HandleExceptionResolver接口
+* @ControllerAdvice标记为全局异常处理类，@ExceptionHandler标记处理异常的方法
+* @ResponseStatus注解的r使用详解，ResponseStatusExceptionResolver类解析注解@ResponseStatus,可以用在异常类上和目标方法上
+* DefaultHandlerExceptionResolver，springmvc默认的一些异常处理
+* SimpleMappingExceptionResolver
+* SpringMVC运行流程:DispatcherServlet->HandlerMapping(HandlerExecutionChain)->HandlerAdapter->preHandle
+  ->目标方法返回ModelAndView->postHandle(是否有异常,返回新的ModelAndView)->viewResolver根据ModelAndView获得实际的View
+  ->渲染视图->执行afterCompletion方法
+
 
 
 
