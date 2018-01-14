@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<context:component-scan base-package="com.ypvoid" use-default-filters="true">
+		<!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"></context:exclude-filter>-->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"></context:include-filter>
+	</context:component-scan>
+	
+	<!-- 配置一个 bean -->
+	<bean id="helloWorld" class="com.ypvoid.HelloWorld">
+		<!-- 为属性赋值 -->
+		<property name="name" value="Jerry"></property>
+	</bean>
+
+	<!-- 若一个 bean 有多个构造器, 如何通过构造器来为 bean 的属性赋值 -->
+	<!-- 可以根据 index 和 value 进行更加精确的定位. (了解) -->
+	<bean id="car" class="com.ypvoid.Car">
+		<constructor-arg value="KUGA" index="1"></constructor-arg>
+		<constructor-arg value="ChangAnFord" index="0"></constructor-arg>
+		<constructor-arg value="250000" type="float"></constructor-arg>
+	</bean>
+
+	<bean id="car2" class="com.ypvoid.Car">
+		<constructor-arg value="ChangAnMazda"></constructor-arg>
+		<!-- 若字面值中包含特殊字符, 则可以使用 DCDATA 来进行赋值. (了解) -->
+		<constructor-arg>
+			<value><![CDATA[<ATARZA>]]></value>
+		</constructor-arg>
+		<constructor-arg value="180" type="int"></constructor-arg>
+	</bean>
+
+	<!--配置Bean后置处理器-->
+	<bean id="myBeanPostProcessor" class="com.ypvoid.MyBeanPostProcessor"></bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
